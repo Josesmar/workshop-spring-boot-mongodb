@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.josesmar.workshopmongodb.dto.UserDto;
 import com.josesmar.workshopmongodb.entities.User;
@@ -35,6 +36,19 @@ public class UserService {
 		userRepository.deleteById(id);
 	}
 	
+	public User update (@PathVariable User user) {
+		User newUser = findById(user.getId());
+		updateData(newUser, user);
+		
+		return userRepository.save(newUser);
+	}
+	
+	private void updateData(User newUser, User user) {
+		newUser.setName(user.getName());
+		newUser.setEmail(user.getEmail());
+		
+	}
+
 	public User fromDto(UserDto userDto) {
 		return new User(userDto.getId(), userDto.getName(), userDto.getEmail());
 	}
