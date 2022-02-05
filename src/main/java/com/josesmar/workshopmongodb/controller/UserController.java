@@ -1,13 +1,17 @@
 package com.josesmar.workshopmongodb.controller;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.josesmar.workshopmongodb.dto.UserDto;
 import com.josesmar.workshopmongodb.entities.User;
 import com.josesmar.workshopmongodb.service.UserService;
 
@@ -19,13 +23,17 @@ public class UserController {
 	private UserService userService;
 
 	@GetMapping
-	public ResponseEntity<List<User>> findAll(){
+	public ResponseEntity<List<UserDto>> findAll(){
 		List<User> list = userService.findAll();
+		List<UserDto> listDto = list.stream().map(x -> new UserDto(x)).collect(Collectors.toList());		
 		
-		if (list == null) {
-			throw new IllegalAccessError("Error");
-		}
+		return ResponseEntity.ok().body(listDto);
+	}
+	
+	@GetMapping(value = "/{id}")
+	public ResponseEntity<UserDto> findById(@PathVariable String id){
+		User user = userService.findById(id);		
 		
-		return ResponseEntity.ok().body(list);
+		return ResponseEntity.ok().body(new UserDto(user));
 	}
 }
