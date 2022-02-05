@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 
+import com.josesmar.workshopmongodb.dto.AuthorDto;
 import com.josesmar.workshopmongodb.entities.Post;
 import com.josesmar.workshopmongodb.entities.User;
 import com.josesmar.workshopmongodb.repository.PostRepository;
@@ -35,10 +36,12 @@ public class Instantiation implements CommandLineRunner{
 		User alex = new User(null, "Alex Green", "alex@gmail.com");
 		User bob = new User(null, "Bob Grey", "bob@gmail.com");
 		
-		Post post1 = new Post(null, sdf.parse("21/03/2021"), "Partiu viagem", "Vou viajar para São Paulo - Abraços", maria);
-		Post post2 = new Post(null, sdf.parse("23/03/2021"), "Bom dia", "Vou trabalhar hoje", maria);		
-		
 		userRepository.saveAll(Arrays.asList(maria, alex, bob));
+		
+		Post post1 = new Post(null, sdf.parse("21/03/2021"), "Partiu viagem", "Vou viajar para São Paulo - Abraços", new AuthorDto(maria));
+		Post post2 = new Post(null, sdf.parse("23/03/2021"), "Bom dia", "Vou trabalhar hoje", new AuthorDto(maria));		
+		
+		
 		postRepositoy.saveAll(Arrays.asList(post1, post2));
 		
 	}
